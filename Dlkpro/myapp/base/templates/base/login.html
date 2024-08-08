@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgb(246, 89, 207), white);
+        }
+
+        .login-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-container h1 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        .login-container p {
+            margin-bottom: 20px;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .login-form input:focus {
+            border-color: #0056b3;
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 45px;
+        }
+
+        .password-wrapper .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #555;
+        }
+
+        .login-form button {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .login-form button:hover {
+            background: #000;
+        }
+
+        .login-form a {
+            color: #0056b3;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .login-form a:hover {
+            text-decoration: underline;
+        }
+
+        .sign-up-link {
+            text-align: center;
+            font-size: 15px;
+            margin-top: 20px;
+        }
+
+        .sign-up-link a {
+            color: #000;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <p>Welcome back! Please login to your account.</p>
+        <form action="{% url 'login' %}" method="post" class="login-form">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+                {{ form.username.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" class="form-control" required>
+                    <i class="fas fa-eye toggle-password" id="togglePassword" onclick="togglePasswordVisibility('password')"></i>
+                    {{ form.password.errors }}
+                </div>
+            </div>
+
+            {% comment %} <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                <label class="form-check-label" for="remember">Remember me</label>
+            </div> {% endcomment %}
+
+            <div class="form-group">
+                <a href="#">Forgot password?</a>
+            </div>
+
+            
+            
+
+            <a href="{% url 'portfolio' %}" style='text-decoration:none;'><button type="button" class="btn btn-primary btn-block px-5 ">
+            Login
+            </button></a>
+
+        </form>
+
+
+
+
+
+
+
+        <div class="sign-up-link">
+
+
+
+            <p>Don't have an account? <a href="{% url 'register' %}">Sign Up</a></p>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility(id) {
+            const passwordField = document.getElementById(id);
+            const togglePassword = document.getElementById('togglePassword');
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            togglePassword.classList.toggle('fa-eye-slash');
+        }
+
+        
+        
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

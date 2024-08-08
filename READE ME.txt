@@ -1,0 +1,14 @@
+1. *Navigate to Project Directory*:
+   - Use your terminal to navigate to my project folder Dlkpro ,(cd Dlkpro)
+
+2. *Django Project*:
+   - my project name is myapp,(cd myapp)
+
+3.run the code
+	python manage.py runserver
+
+4. *Copy Server Link*:
+   - After starting the server, note the URL provided (usually http://127.0.0.1:8000/).
+
+5. *Open Link in Browser*:
+   - Paste the copied URL into your Chrome browser to view the project.

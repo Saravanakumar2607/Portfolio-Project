@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background: linear-gradient(rgb(246, 89, 207), white);
+        }
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background-color: #fff;
+            padding: 25px 30px;
+            border-radius: 5px;
+            box-shadow: 0 5px 10px rgb(246, 89, 207);
+            position: relative;
+        }
+        .container .title {
+            color: black;
+            font-size: 25px;
+            font-weight: 500;
+            position: relative;
+            text-align: center;
+        }
+        .container .title::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            height: 3px;
+            width: 30px;
+            border-radius: 5px;
+            background: linear-gradient(135deg, rgb(246, 89, 207), white);
+            transform: translateX(-50%);
+        }
+        .message {
+            color: green;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .content form .user-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 20px 0 12px 0;
+        }
+        form .user-details .input-box {
+            margin-bottom: 15px;
+            width: calc(100% / 2 - 20px);
+            position: relative;
+        }
+        form .input-box span.details {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .user-details .input-box input {
+            height: 45px;
+            width: 100%;
+            outline: none;
+            font-size: 16px;
+            border-radius: 5px;
+            padding-left: 15px;
+            padding-right: 40px; /* Add space for the icon */
+            border: 1px solid #ccc;
+            border-bottom-width: 2px;
+            transition: all 0.3s ease;
+        }
+        .user-details .input-box input:focus,
+        .user-details .input-box input:valid {
+            border-color: rgb(246, 89, 207);
+        }
+        .input-box .input-group-append {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        form .button {
+            height: 45px;
+            margin: 35px 0;
+        }
+        form .button input {
+            height: 100%;
+            width: 100%;
+            border-radius: 5px;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgb(246, 89, 207), white);
+        }
+        form .button input:hover {
+            background: linear-gradient(-135deg, rgb(246, 89, 207), white);
+            color: rgb(246, 89, 207);
+        }
+        .links {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .links a {
+            text-decoration: none;
+            color: rgb(246, 89, 207);
+            font-weight: 500;
+        }
+        @media(max-width: 584px) {
+            .container {
+                max-width: 100%;
+            }
+            form .user-details .input-box {
+                margin-bottom: 15px;
+                width: 100%;
+            }
+            .content form .user-details {
+                max-height: 300px;
+                overflow-y: scroll;
+            }
+            .user-details::-webkit-scrollbar {
+                width: 5px;
+            }
+        }
+        @media(max-width: 459px) {
+            .container .content .category {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Registration</div>
+        {% if messages %}
+        <div class="message">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="content">
+            <form method="post" class="register-form" onsubmit="return validateForm()">
+                {% csrf_token %}
+                <div class="user-details">
+                    <div class="input-box">
+                        <span class="details">User Name</span>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">E-Mail ID</span>
+                        <input type="email" name="useremail" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Password</span>
+                        <input type="password" id="password" name="password" class="form-control" required oninput="checkPasswordStrength()">
+                        <div class="input-group-append" onclick="togglePasswordVisibility('password')">
+                            <span class="input-group-text"><i id="toggle-password" class="fas fa-eye"></i></span>
+                        </div>
+                        <div id="password-strength" class="password-strength">Strength: </div>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Confirm Password</span>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                        <div class="input-group-append" onclick="togglePasswordVisibility('confirm_password')">
+                            <span class="input-group-text"><i id="toggle-confirm_password" class="fas fa-eye"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="button">
+                    <input type="submit" name="submit" value="Sign Up">
+                </div>
+            </form>
+            <div class="links">
+                <a href="/">Back to Home</a> | 
+                <a href="/login/">Already registered? Go to Login</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strength = document.getElementById('password-strength');
+            
+            if (password.length === 0) {
+                strength.textContent = 'Strength: ';
+                strength.className = 'password-strength';
+                return;
+            }
+            
+            const lengthCriteria = password.length >= 8;
+            const numberCriteria = /\d/.test(password);
+            const letterCriteria = /[a-zA-Z]/.test(password);
+            const specialCriteria = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+            let strengthClass = 'weak';
+            let strengthText = 'Weak';
+
+            if (lengthCriteria && numberCriteria && letterCriteria && specialCriteria) {
+                strengthClass = 'strong';
+                strengthText = 'Strong';
+            } else if (lengthCriteria && (numberCriteria || letterCriteria)) {
+                strengthClass = 'medium';
+                strengthText = 'Medium';
+            }
+
+            strength.textContent = `Strength: ${strengthText}`;
+            strength.className = `password-strength ${strengthClass}`;
+        }
+
+        function togglePasswordVisibility(id) {
+            const passwordInput = document.getElementById(id);
+            const toggleIcon = id === 'password' ? document.getElementById('toggle-password') : document.getElementById('toggle-confirm_password');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        function validateForm() {
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('confirm_password').value;
+
+            if (password !== passwordConfirm) {
+                alert('Passwords do not match.');
+                return false;
+            }
+            return true;
+        }   
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+</body>
+</html>
